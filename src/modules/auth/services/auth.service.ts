@@ -43,7 +43,7 @@ export class AuthService {
       }
 
       throw new InternalServerErrorException(
-        "Une erreur inattendue s'est produite. TSY NANDE PR E",
+        "Une erreur inattendue s'est produite.",
       );
     }
   }

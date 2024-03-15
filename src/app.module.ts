@@ -7,6 +7,12 @@ import { FournisseurModule } from './modules/fournisseur/fournisseur.module';
 import { Fournisseur } from './modules/fournisseur/entities/fournisseur.entity';
 import { AnneeModule } from './modules/annee/annee.module';
 import { Annee } from './modules/annee/entities/annee.entity';
+import { ServiceModule } from './modules/service/service.module';
+import { Service } from './modules/service/entities/service.entity';
+//import { OrdreModule } from './modules/ordre/ordre.module';
+import { Ordre } from './modules/ordre/entities/ordre.entity';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -17,15 +23,16 @@ import { Annee } from './modules/annee/entities/annee.entity';
       password: '',
       database: 'gestionmateriels',
       synchronize: true,
-      entities: [User, Fournisseur, Annee],
+      entities: [User, Fournisseur, Annee, Service, Ordre],
     }),
     UsersModule,
     AuthModule,
     FournisseurModule,
-    TypeOrmModule.forFeature([User, Fournisseur, Annee]),
     AnneeModule,
+    ServiceModule,
+    //OrdreModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -21,7 +21,7 @@ export class FournisseurService {
       return await this.fournisseurRepository.save(newfrns);
     } catch (error) {
       throw new Error(
-        `Erreur lors de la création de l'utilisateur: ${error.message}`,
+        `Erreur lors de la création du fournisseur: ${error.message}`,
       );
     }
   }
@@ -50,22 +50,23 @@ export class FournisseurService {
 
       this.fournisseurRepository.merge(Frnsexist, updateFournisseurDto);
 
-      const updatedUser = await this.fournisseurRepository.save(Frnsexist);
+      const updatedFournisseur =
+        await this.fournisseurRepository.save(Frnsexist);
 
-      return updatedUser;
+      return updatedFournisseur;
     } catch (error) {
       throw new NotFoundException('numero Fournisseur pas trouver');
     }
   }
 
   async remove(numFrns: number): Promise<Fournisseur | NotFoundException> {
-    const user = await this.fournisseurRepository.findOne({
+    const Fournisseur = await this.fournisseurRepository.findOne({
       where: { numFrns },
     });
-    if (!user) {
+    if (!Fournisseur) {
       throw new NotFoundException('Numero Fournisseur pas trouver');
     }
-    await this.fournisseurRepository.remove(user);
-    return user;
+    await this.fournisseurRepository.remove(Fournisseur);
+    return Fournisseur;
   }
 }
