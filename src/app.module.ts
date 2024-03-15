@@ -13,6 +13,13 @@ import { Service } from './modules/service/entities/service.entity';
 import { Ordre } from './modules/ordre/entities/ordre.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { OrdreModule } from './modules/ordre/ordre.module';
+import { OrdreController } from './modules/ordre/controller/ordre.controller';
+import { AnneeController } from './modules/annee/controller/annee.controller';
+import { ServiceController } from './modules/service/controller/service.controller';
+import { OrdreService } from './modules/ordre/service/ordre.service';
+import { AnneeService } from './modules/annee/service/annee.service';
+import { ServiceService } from './modules/service/service/service.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -25,14 +32,20 @@ import { AppService } from './app.service';
       synchronize: true,
       entities: [User, Fournisseur, Annee, Service, Ordre],
     }),
+    TypeOrmModule.forFeature([User, Fournisseur, Annee, Service, Ordre]),
     UsersModule,
     AuthModule,
     FournisseurModule,
     AnneeModule,
     ServiceModule,
-    //OrdreModule,
+    OrdreModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    OrdreController,
+    AnneeController,
+    ServiceController,
+  ],
+  providers: [AppService, OrdreService, AnneeService, ServiceService],
 })
 export class AppModule {}

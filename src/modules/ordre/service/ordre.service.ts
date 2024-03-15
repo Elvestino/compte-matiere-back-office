@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Ordre } from '../entities/ordre.entity';
 import { Service } from 'src/modules/service/entities/service.entity';
 import { Annee } from 'src/modules/annee/entities/annee.entity';
+import { UpdateOrdreDto } from '../dto/update-ordre.dto';
 
 @Injectable()
 export class OrdreService {
@@ -36,8 +37,6 @@ export class OrdreService {
       const ordre = new Ordre();
       ordre.numOrdre = createOrdreDto.numOrdre;
       ordre.dateOrdre = createOrdreDto.dateOrdre;
-      ordre.service = service;
-      ordre.annee = annee;
 
       const saveOrdre = await this.ordreRepository.save(ordre);
       return saveOrdre;
@@ -48,19 +47,26 @@ export class OrdreService {
     }
   }
 
-  findAll() {
-    return `This action returns all ordre`;
+  findAll(): Promise<Ordre[]> {
+    return this.ordreRepository.find({ relations: ['annee', 'service'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ordre`;
+  findOne(numOrdre: number): Promise<Ordre> {
+    return this.ordreRepository.findOne({
+      where: { numOrdre },
+      relations: ['ordre'],
+    });
   }
 
-  // update(id: number, updateOrdreDto: UpdateOrdreDto) {
-  //   return `This action updates a #${id} ordre`;
-  // }
+  async update(
+    numOrdre: number,
+    updateOrdreDto: UpdateOrdreDto,
+  ): Promise<Ordre> {
+    await this.ordreRepository.update(numOrdre, updateOrdreDto);
+    return this.findOne(numOrdre);
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} ordre`;
+  async delete(numOrdre: number): Promise<void> {
+    await this.ordreRepository.delete(numOrdre);
   }
 }

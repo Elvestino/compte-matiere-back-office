@@ -6,9 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // import { ServiceModule } from '../service/service.module';
 import { AnneeModule } from '../annee/annee.module';
 import { ServiceModule } from '../service/service.module';
+import { Annee } from '../annee/entities/annee.entity';
+import { Service } from '../service/entities/service.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ordre]), AnneeModule, ServiceModule],
+  imports: [
+    TypeOrmModule.forFeature([Ordre, Annee, Service]),
+    AnneeModule,
+    ServiceModule,
+  ],
   controllers: [OrdreController],
   providers: [OrdreService],
   exports: [OrdreService],

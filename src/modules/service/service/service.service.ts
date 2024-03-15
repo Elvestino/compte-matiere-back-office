@@ -23,16 +23,17 @@ export class ServiceService {
     }
   }
 
-  findAll() {
-    return this.ServiceRepository.find();
+  findAll(): Promise<Service[]> {
+    return this.ServiceRepository.find({ relations: ['ordre'] });
   }
 
   async findOne(numService: number): Promise<Service | NotFoundException> {
     const newService = await this.ServiceRepository.findOne({
       where: { numService },
+      relations: ['ordre'],
     });
     if (!newService) {
-      throw new NotFoundException('Numero service pas trouver');
+      throw new NotFoundException('Service not found');
     }
     return newService;
   }

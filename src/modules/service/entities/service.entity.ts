@@ -1,5 +1,5 @@
 import { Ordre } from 'src/modules/ordre/entities/ordre.entity';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 @Entity()
 export class Service {
   @PrimaryColumn()
@@ -17,6 +17,6 @@ export class Service {
   @Column()
   typeService: string;
 
-  @OneToMany(() => Ordre, (ordre) => ordre.service)
-  ordres: Ordre[];
+  @ManyToOne(() => Ordre, (ordre) => ordre.service)
+  ordres: Ordre;
 }

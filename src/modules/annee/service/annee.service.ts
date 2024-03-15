@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class AnneeService {
   constructor(
     @InjectRepository(Annee)
-    private readonly AnneeRepository: Repository<Annee>,
+    private AnneeRepository: Repository<Annee>,
   ) {}
   async create(createAnneeDto: CreateAnneeDto): Promise<Annee> {
     try {
@@ -18,7 +18,15 @@ export class AnneeService {
       console.log('error', error);
     }
   }
-
+  findAll(): Promise<Annee[]> {
+    return this.AnneeRepository.find({ relations: ['ordre'] });
+  }
+  findOne(newannee: number): Promise<Annee> {
+    return this.AnneeRepository.findOne({
+      where: { newannee },
+      relations: ['ordre'],
+    });
+  }
   async remove(newannee: number): Promise<Annee> {
     const newsannee = await this.AnneeRepository.findOne({
       where: { newannee },

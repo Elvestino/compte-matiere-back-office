@@ -1,6 +1,6 @@
 import { Annee } from 'src/modules/annee/entities/annee.entity';
 import { Service } from 'src/modules/service/entities/service.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Ordre {
@@ -10,11 +10,11 @@ export class Ordre {
   @Column({ type: Date })
   dateOrdre: Date;
 
-  @ManyToOne(() => Service, (service) => service.ordres)
+  @OneToMany(() => Service, (service) => service.ordres)
   @JoinColumn({ name: 'numService' })
-  service: Service;
+  service: Service[];
 
-  @ManyToOne(() => Annee, (annee) => annee.ordres)
+  @OneToMany(() => Annee, (annee) => annee.ordres)
   @JoinColumn({ name: 'newannee' })
-  annee: Annee;
+  annee: Annee[];
 }

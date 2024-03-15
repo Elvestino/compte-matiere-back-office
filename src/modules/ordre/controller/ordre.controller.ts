@@ -1,6 +1,16 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { OrdreService } from '../service/ordre.service';
 import { CreateOrdreDto } from '../dto/create-ordre.dto';
+import { Ordre } from '../entities/ordre.entity';
+import { UpdateOrdreDto } from '../dto/update-ordre.dto';
 //import { UpdateOrdreDto } from '../dto/update-ordre.dto';
 
 @Controller('ordre')
@@ -8,7 +18,7 @@ export class OrdreController {
   constructor(private readonly ordreService: OrdreService) {}
 
   @Post()
-  create(@Body() createOrdreDto: CreateOrdreDto) {
+  create(@Body() createOrdreDto: CreateOrdreDto): Promise<Ordre> {
     return this.ordreService.create(createOrdreDto);
   }
 
@@ -17,18 +27,21 @@ export class OrdreController {
     return this.ordreService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordreService.findOne(+id);
+  @Get(':numOrdre')
+  findOne(@Param('numOrdre') numOrdre: number): Promise<Ordre> {
+    return this.ordreService.findOne(numOrdre);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateOrdreDto: UpdateOrdreDto) {
-  //   return this.ordreService.update(+id, updateOrdreDto);
-  // }
+  @Patch(':numOrdre')
+  update(
+    @Param('numOrdre') numOrdre: number,
+    @Body() updateOrdreDto: UpdateOrdreDto,
+  ) {
+    return this.ordreService.update(numOrdre, updateOrdreDto);
+  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordreService.remove(+id);
+  @Delete(':numOrdre')
+  remove(@Param('numOrdre') numOrdre: number) {
+    return this.ordreService.delete(numOrdre);
   }
 }
