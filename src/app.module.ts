@@ -9,7 +9,6 @@ import { AnneeModule } from './modules/annee/annee.module';
 import { Annee } from './modules/annee/entities/annee.entity';
 import { ServiceModule } from './modules/service/service.module';
 import { Service } from './modules/service/entities/service.entity';
-//import { OrdreModule } from './modules/ordre/ordre.module';
 import { Ordre } from './modules/ordre/entities/ordre.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';

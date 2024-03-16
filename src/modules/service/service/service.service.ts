@@ -24,7 +24,7 @@ export class ServiceService {
   }
 
   findAll(): Promise<Service[]> {
-    return this.ServiceRepository.find({ relations: ['ordre'] });
+    return this.ServiceRepository.find();
   }
 
   async findOne(numService: number): Promise<Service | NotFoundException> {

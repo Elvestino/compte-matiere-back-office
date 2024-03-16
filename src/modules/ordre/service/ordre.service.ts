@@ -37,7 +37,8 @@ export class OrdreService {
       const ordre = new Ordre();
       ordre.numOrdre = createOrdreDto.numOrdre;
       ordre.dateOrdre = createOrdreDto.dateOrdre;
-
+      ordre.service = service;
+      ordre.annee = annee;
       const saveOrdre = await this.ordreRepository.save(ordre);
       return saveOrdre;
     } catch (error) {

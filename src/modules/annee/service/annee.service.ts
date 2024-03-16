@@ -19,7 +19,7 @@ export class AnneeService {
     }
   }
   findAll(): Promise<Annee[]> {
-    return this.AnneeRepository.find({ relations: ['ordre'] });
+    return this.AnneeRepository.find();
   }
   findOne(newannee: number): Promise<Annee> {
     return this.AnneeRepository.findOne({

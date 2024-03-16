@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Param, Delete, Get } from '@nestjs/common';
 import { AnneeService } from '../service/annee.service';
 import { CreateAnneeDto } from '../dto/create-annee.dto';
 
@@ -9,6 +9,10 @@ export class AnneeController {
   @Post()
   create(@Body() createAnneeDto: CreateAnneeDto) {
     return this.anneeService.create(createAnneeDto);
+  }
+  @Get()
+  findAll() {
+    return this.anneeService.findAll();
   }
 
   @Delete(':annee')
