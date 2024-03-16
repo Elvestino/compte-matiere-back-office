@@ -7,7 +7,7 @@ export class Ordre {
   @PrimaryColumn()
   numOrdre: number;
 
-  @Column({ type: Date })
+  @Column({ type: 'date' })
   dateOrdre: Date;
 
   @ManyToOne(() => Service, (service) => service.ordres)
