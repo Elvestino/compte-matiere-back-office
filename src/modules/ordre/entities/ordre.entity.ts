@@ -1,6 +1,7 @@
 import { Annee } from 'src/modules/annee/entities/annee.entity';
+import { Facture } from 'src/modules/facture/entities/facture.entity';
 import { Service } from 'src/modules/service/entities/service.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Ordre {
@@ -17,4 +18,7 @@ export class Ordre {
   @ManyToOne(() => Annee, (annee) => annee.ordres)
   // @JoinColumn({ name: 'newannee' })
   annee: Annee;
+
+  @OneToMany(() => Facture, (facture) => facture.ordre)
+  factures: Facture[];
 }

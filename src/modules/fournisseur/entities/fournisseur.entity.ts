@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Facture } from 'src/modules/facture/entities/facture.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Fournisseur {
@@ -19,4 +20,7 @@ export class Fournisseur {
 
   @Column()
   typeFrns: string;
+
+  @OneToMany(() => Facture, (facture) => facture.numFacture)
+  factures: Facture[];
 }

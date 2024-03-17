@@ -19,6 +19,10 @@ import { ServiceController } from './modules/service/controller/service.controll
 import { OrdreService } from './modules/ordre/service/ordre.service';
 import { AnneeService } from './modules/annee/service/annee.service';
 import { ServiceService } from './modules/service/service/service.service';
+import { FactureModule } from './modules/facture/facture.module';
+import { Facture } from './modules/facture/entities/facture.entity';
+import { FactureController } from './modules/facture/controller/facture.controller';
+import { FactureService } from './modules/facture/service/facture.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -29,22 +33,37 @@ import { ServiceService } from './modules/service/service/service.service';
       password: '',
       database: 'gestionmateriels',
       synchronize: true,
-      entities: [User, Fournisseur, Annee, Service, Ordre],
+      entities: [User, Fournisseur, Annee, Service, Ordre, Facture],
     }),
-    TypeOrmModule.forFeature([User, Fournisseur, Annee, Service, Ordre]),
+    TypeOrmModule.forFeature([
+      User,
+      Fournisseur,
+      Annee,
+      Service,
+      Ordre,
+      Facture,
+    ]),
     UsersModule,
     AuthModule,
     FournisseurModule,
     AnneeModule,
     ServiceModule,
     OrdreModule,
+    FactureModule,
   ],
   controllers: [
     AppController,
     OrdreController,
     AnneeController,
     ServiceController,
+    FactureController,
   ],
-  providers: [AppService, OrdreService, AnneeService, ServiceService],
+  providers: [
+    AppService,
+    OrdreService,
+    AnneeService,
+    ServiceService,
+    FactureService,
+  ],
 })
 export class AppModule {}

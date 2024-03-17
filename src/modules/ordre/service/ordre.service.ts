@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrdreDto } from '../dto/create-ordre.dto';
-//import { UpdateOrdreDto } from '../dto/update-ordre.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Ordre } from '../entities/ordre.entity';
@@ -55,7 +54,7 @@ export class OrdreService {
   findOne(numOrdre: number): Promise<Ordre> {
     return this.ordreRepository.findOne({
       where: { numOrdre },
-      relations: ['ordre'],
+      relations: ['ordre', 'facture'],
     });
   }
 
@@ -63,8 +62,43 @@ export class OrdreService {
     numOrdre: number,
     updateOrdreDto: UpdateOrdreDto,
   ): Promise<Ordre> {
-    await this.ordreRepository.update(numOrdre, updateOrdreDto);
-    return this.findOne(numOrdre);
+    try {
+      const { numService, newannee } = updateOrdreDto;
+
+      const service = await this.ServiceRepository.findOneOrFail({
+        where: { numService: updateOrdreDto.numService },
+      });
+      if (!service) {
+        throw new Error(`Service with numService ${numService} not found.`);
+      }
+      const annee = await this.anneerepository.findOneOrFail({
+        where: { newannee: updateOrdreDto.newannee },
+      });
+      if (!annee) {
+        throw new Error(`Annee with newannee ${newannee} not found.`);
+      }
+      const existOrdre = await this.ordreRepository.findOneOrFail({
+        where: { numOrdre },
+      });
+
+      const ordre = new Ordre();
+      ordre.numOrdre = updateOrdreDto.numOrdre;
+      ordre.dateOrdre = updateOrdreDto.dateOrdre;
+      ordre.service = service;
+      ordre.annee = annee;
+      const serviceandanneupdate = await this.ordreRepository.merge(
+        ordre,
+        updateOrdreDto,
+      );
+      const updateOrdre = await this.ordreRepository.save(serviceandanneupdate);
+
+      return updateOrdre;
+    } catch (error) {
+      console.log(error);
+      throw new Error(
+        `Erreur lors de la modification de l'ordre: ${error.message}`,
+      );
+    }
   }
 
   async delete(numOrdre: number): Promise<void> {

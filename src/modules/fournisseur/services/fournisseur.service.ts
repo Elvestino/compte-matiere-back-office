@@ -32,6 +32,7 @@ export class FournisseurService {
   async findOne(numFrns: number): Promise<Fournisseur | NotFoundException> {
     const newFrns = await this.fournisseurRepository.findOne({
       where: { numFrns },
+      relations: ['facture'],
     });
     if (!newFrns) {
       throw new NotFoundException('Numero fournisseur pas trouver');
@@ -49,10 +50,10 @@ export class FournisseurService {
       });
 
       this.fournisseurRepository.merge(Frnsexist, updateFournisseurDto);
-
+      console.log(Frnsexist);
       const updatedFournisseur =
         await this.fournisseurRepository.save(Frnsexist);
-
+      console.log(updatedFournisseur);
       return updatedFournisseur;
     } catch (error) {
       throw new NotFoundException('numero Fournisseur pas trouver');
