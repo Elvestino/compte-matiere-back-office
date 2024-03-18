@@ -65,34 +65,33 @@ export class OrdreService {
     try {
       const { numService, newannee } = updateOrdreDto;
 
+      const existingOrdre = await this.ordreRepository.findOneOrFail({
+        where: { numOrdre },
+        relations: ['service', 'annee'],
+      });
+      if (!existingOrdre) {
+        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
+      }
       const service = await this.ServiceRepository.findOneOrFail({
-        where: { numService: updateOrdreDto.numService },
+        where: { numService },
       });
       if (!service) {
         throw new Error(`Service with numService ${numService} not found.`);
       }
+
       const annee = await this.anneerepository.findOneOrFail({
-        where: { newannee: updateOrdreDto.newannee },
+        where: { newannee },
       });
       if (!annee) {
         throw new Error(`Annee with newannee ${newannee} not found.`);
       }
-      const existOrdre = await this.ordreRepository.findOneOrFail({
-        where: { numOrdre },
-      });
 
-      const ordre = new Ordre();
-      ordre.numOrdre = updateOrdreDto.numOrdre;
-      ordre.dateOrdre = updateOrdreDto.dateOrdre;
-      ordre.service = service;
-      ordre.annee = annee;
-      const serviceandanneupdate = await this.ordreRepository.merge(
-        ordre,
-        updateOrdreDto,
-      );
-      const updateOrdre = await this.ordreRepository.save(serviceandanneupdate);
+      existingOrdre.dateOrdre = updateOrdreDto.dateOrdre;
+      existingOrdre.service = service;
+      existingOrdre.annee = annee;
 
-      return updateOrdre;
+      const updatedOrdre = await this.ordreRepository.save(existingOrdre);
+      return updatedOrdre;
     } catch (error) {
       console.log(error);
       throw new Error(
@@ -100,7 +99,6 @@ export class OrdreService {
       );
     }
   }
-
   async delete(numOrdre: number): Promise<void> {
     await this.ordreRepository.delete(numOrdre);
   }
