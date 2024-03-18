@@ -14,7 +14,7 @@ export class UpdateFactureDto extends PartialType(CreateFactureDto) {
   @IsString()
   LieuFacture: string;
   @IsString()
-  montantFacture: string;
+  montantFacture: number;
   @IsString()
   typeFacture: string;
 

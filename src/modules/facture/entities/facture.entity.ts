@@ -11,11 +11,11 @@ export class Facture {
   @Column()
   destination: string;
   @Column()
-  ojbetFacture: string;
+  objetFacture: string;
   @Column()
   LieuFacture: string;
   @Column()
-  montantFacture: string;
+  montantFacture: number;
   @Column()
   typeFacture: string;
 

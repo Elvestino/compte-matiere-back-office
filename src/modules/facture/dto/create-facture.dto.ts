@@ -8,11 +8,11 @@ export class CreateFactureDto {
   @IsString()
   destination: string;
   @IsString()
-  ojbetFacture: string;
+  objetFacture: string;
   @IsString()
   LieuFacture: string;
   @IsString()
-  montantFacture: string;
+  montantFacture: number;
   @IsString()
   typeFacture: string;
 

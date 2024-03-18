@@ -25,8 +25,9 @@ export class FactureService {
       where: { numFrns: CreateFactureDto.numFrns },
     });
     if (!fournisseur) {
-      throw new Error(`Facture with numFrns ${numFrns} not found.`);
+      throw new Error(`Fournisseur with numFrns ${numFrns} not found.`);
     }
+
     const ordre = await this.Ordrerepository.findOne({
       where: { numOrdre: CreateFactureDto.numOrdre },
     });
@@ -35,7 +36,13 @@ export class FactureService {
     }
     try {
       const facture = new Facture();
-      CreateFactureDto;
+      facture.numFacture = CreateFactureDto.numFacture;
+      facture.dateFacture = CreateFactureDto.dateFacture;
+      facture.destination = CreateFactureDto.destination;
+      facture.objetFacture = CreateFactureDto.objetFacture;
+      facture.LieuFacture = CreateFactureDto.LieuFacture;
+      facture.montantFacture = CreateFactureDto.montantFacture;
+      facture.typeFacture = CreateFactureDto.typeFacture;
       facture.fournisseur = fournisseur;
       facture.ordre = ordre;
       const savefacture = await this.Factureepository.save(facture);
@@ -62,8 +69,47 @@ export class FactureService {
     numFacture: number,
     updateFactureDto: UpdateFactureDto,
   ): Promise<Facture> {
-    await this.Factureepository.update(numFacture, updateFactureDto);
-    return this.findOne(numFacture);
+    try {
+      const { numFrns, numOrdre } = updateFactureDto;
+
+      const existingFacture = await this.Factureepository.findOneOrFail({
+        where: { numFacture },
+        relations: ['fournisseur', 'ordre'],
+      });
+      if (!existingFacture) {
+        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
+      }
+      const frns = await this.FournisseurRepository.findOneOrFail({
+        where: { numFrns },
+      });
+      if (!frns) {
+        throw new Error(`Fournisseur with numFrns ${numFacture} not found.`);
+      }
+
+      const ordre = await this.Ordrerepository.findOneOrFail({
+        where: { numOrdre },
+      });
+      if (!ordre) {
+        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
+      }
+
+      existingFacture.dateFacture = updateFactureDto.dateFacture;
+      existingFacture.destination = updateFactureDto.destination;
+      existingFacture.objetFacture = updateFactureDto.objetFacture;
+      existingFacture.LieuFacture = updateFactureDto.LieuFacture;
+      existingFacture.montantFacture = updateFactureDto.montantFacture;
+      existingFacture.typeFacture = updateFactureDto.typeFacture;
+      existingFacture.fournisseur = frns;
+      existingFacture.ordre = ordre;
+
+      const updatedFacture = await this.Factureepository.save(existingFacture);
+      return updatedFacture;
+    } catch (error) {
+      console.log(error);
+      throw new Error(
+        `Erreur lors de la modification de l'ordre: ${error.message}`,
+      );
+    }
   }
 
   async delete(numFacture: number): Promise<void> {
