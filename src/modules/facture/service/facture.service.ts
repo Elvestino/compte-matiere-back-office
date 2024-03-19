@@ -61,7 +61,7 @@ export class FactureService {
   findOne(numFacture: number): Promise<Facture> {
     return this.Factureepository.findOne({
       where: { numFacture },
-      relations: ['facture'],
+      relations: ['facture', 'entree'],
     });
   }
 
@@ -107,7 +107,7 @@ export class FactureService {
     } catch (error) {
       console.log(error);
       throw new Error(
-        `Erreur lors de la modification de l'ordre: ${error.message}`,
+        `Erreur lors de la modification du facture: ${error.message}`,
       );
     }
   }

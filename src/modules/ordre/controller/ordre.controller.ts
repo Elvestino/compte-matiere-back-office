@@ -11,7 +11,6 @@ import { OrdreService } from '../service/ordre.service';
 import { CreateOrdreDto } from '../dto/create-ordre.dto';
 import { Ordre } from '../entities/ordre.entity';
 import { UpdateOrdreDto } from '../dto/update-ordre.dto';
-//import { UpdateOrdreDto } from '../dto/update-ordre.dto';
 
 @Controller('ordre')
 export class OrdreController {

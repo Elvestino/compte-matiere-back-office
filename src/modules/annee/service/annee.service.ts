@@ -24,7 +24,7 @@ export class AnneeService {
   findOne(newannee: number): Promise<Annee> {
     return this.AnneeRepository.findOne({
       where: { newannee },
-      relations: ['ordre'],
+      relations: ['ordre', 'entree'],
     });
   }
   async remove(newannee: number): Promise<Annee> {

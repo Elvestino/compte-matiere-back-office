@@ -23,6 +23,14 @@ import { FactureModule } from './modules/facture/facture.module';
 import { Facture } from './modules/facture/entities/facture.entity';
 import { FactureController } from './modules/facture/controller/facture.controller';
 import { FactureService } from './modules/facture/service/facture.service';
+import { QuitusModule } from './modules/quitus/quitus.module';
+import { Quitus } from './modules/quitus/entities/quitus.entity';
+import { QuitusController } from './modules/quitus/controller/quitus.controller';
+import { QuitusService } from './modules/quitus/service/quitus.service';
+import { EntreeModule } from './modules/entree/entree.module';
+import { Entree } from './modules/entree/entities/entree.entity';
+import { EntreeController } from './modules/entree/controller/entree.controller';
+import { EntreeService } from './modules/entree/service/entree.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -33,7 +41,16 @@ import { FactureService } from './modules/facture/service/facture.service';
       password: '',
       database: 'gestionmateriels',
       synchronize: true,
-      entities: [User, Fournisseur, Annee, Service, Ordre, Facture],
+      entities: [
+        User,
+        Fournisseur,
+        Annee,
+        Service,
+        Ordre,
+        Facture,
+        Quitus,
+        Entree,
+      ],
     }),
     TypeOrmModule.forFeature([
       User,
@@ -41,7 +58,9 @@ import { FactureService } from './modules/facture/service/facture.service';
       Annee,
       Service,
       Ordre,
+      Quitus,
       Facture,
+      Entree,
     ]),
     UsersModule,
     AuthModule,
@@ -50,6 +69,8 @@ import { FactureService } from './modules/facture/service/facture.service';
     ServiceModule,
     OrdreModule,
     FactureModule,
+    QuitusModule,
+    EntreeModule,
   ],
   controllers: [
     AppController,
@@ -57,6 +78,8 @@ import { FactureService } from './modules/facture/service/facture.service';
     AnneeController,
     ServiceController,
     FactureController,
+    QuitusController,
+    EntreeController,
   ],
   providers: [
     AppService,
@@ -64,6 +87,8 @@ import { FactureService } from './modules/facture/service/facture.service';
     AnneeService,
     ServiceService,
     FactureService,
+    QuitusService,
+    EntreeService,
   ],
 })
 export class AppModule {}

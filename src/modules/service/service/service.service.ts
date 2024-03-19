@@ -30,7 +30,7 @@ export class ServiceService {
   async findOne(numService: number): Promise<Service | NotFoundException> {
     const newService = await this.ServiceRepository.findOne({
       where: { numService },
-      relations: ['ordre'],
+      relations: ['ordre', 'quitus'],
     });
     if (!newService) {
       throw new NotFoundException('Service not found');

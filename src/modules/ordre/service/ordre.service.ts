@@ -99,7 +99,8 @@ export class OrdreService {
       );
     }
   }
-  async delete(numOrdre: number): Promise<void> {
-    await this.ordreRepository.delete(numOrdre);
+
+  delete(numOrdre: number) {
+    return this.ordreRepository.delete(numOrdre);
   }
 }

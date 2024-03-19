@@ -1,4 +1,5 @@
 import { Ordre } from 'src/modules/ordre/entities/ordre.entity';
+import { Quitus } from 'src/modules/quitus/entities/quitus.entity';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 @Entity()
 export class Service {
@@ -19,4 +20,6 @@ export class Service {
 
   @OneToMany(() => Ordre, (ordre) => ordre.service)
   ordres: Ordre[];
+  @OneToMany(() => Quitus, (quitus) => quitus.service)
+  quitus: Ordre[];
 }
