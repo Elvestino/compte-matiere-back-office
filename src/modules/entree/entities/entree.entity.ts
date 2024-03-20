@@ -19,9 +19,15 @@ export class Entree {
   @Column()
   prix: number;
 
-  @ManyToOne(() => Annee, (annee) => annee.entree)
+  @ManyToOne(() => Annee, (annee) => annee.entree, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   annee: Annee;
 
-  @ManyToOne(() => Facture, (facture) => facture.entree)
+  @ManyToOne(() => Facture, (facture) => facture.entree, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   facture: Facture;
 }

@@ -7,9 +7,17 @@ export class Annee {
   @PrimaryColumn()
   newannee: number;
 
-  @OneToMany(() => Ordre, (ordre) => ordre.annee)
+  @OneToMany(() => Ordre, (ordre) => ordre.annee, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   ordres: Ordre[];
 
-  @OneToMany(() => Entree, (entree) => entree.annee)
+  @OneToMany(() => Entree, (entree) => entree.annee, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   entree: Entree[];
 }

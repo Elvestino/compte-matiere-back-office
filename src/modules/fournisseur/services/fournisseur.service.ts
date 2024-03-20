@@ -64,6 +64,7 @@ export class FournisseurService {
     const Fournisseur = await this.fournisseurRepository.findOne({
       where: { numFrns },
     });
+
     if (!Fournisseur) {
       throw new NotFoundException('Numero Fournisseur pas trouver');
     }

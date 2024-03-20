@@ -20,12 +20,22 @@ export class Facture {
   @Column()
   typeFacture: string;
 
-  @ManyToOne(() => Fournisseur, (fournisseur) => fournisseur.factures)
+  @ManyToOne(() => Fournisseur, (fournisseur) => fournisseur.factures, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   fournisseur: Fournisseur;
 
-  @ManyToOne(() => Ordre, (ordre) => ordre.factures)
+  @ManyToOne(() => Ordre, (ordre) => ordre.factures, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   ordre: Ordre;
 
-  @OneToMany(() => Entree, (entree) => entree.facture)
+  @OneToMany(() => Entree, (entree) => entree.facture, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   entree: Entree[];
 }

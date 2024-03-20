@@ -21,6 +21,10 @@ export class Fournisseur {
   @Column()
   typeFrns: string;
 
-  @OneToMany(() => Facture, (facture) => facture.numFacture)
+  @OneToMany(() => Facture, (facture) => facture.fournisseur, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   factures: Facture[];
 }

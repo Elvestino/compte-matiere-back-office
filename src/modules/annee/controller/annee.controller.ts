@@ -15,8 +15,8 @@ export class AnneeController {
     return this.anneeService.findAll();
   }
 
-  @Delete(':annee')
-  remove(@Param('annee') annee: number) {
-    return this.anneeService.remove(annee);
+  @Delete(':newannee')
+  remove(@Param('newannee') newannee: number) {
+    return this.anneeService.remove(newannee);
   }
 }

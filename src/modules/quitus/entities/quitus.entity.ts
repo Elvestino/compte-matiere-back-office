@@ -18,6 +18,9 @@ export class Quitus {
   @Column()
   observateur: string;
 
-  @ManyToOne(() => Service, (service) => service.quitus)
+  @ManyToOne(() => Service, (service) => service.quitus, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   service: Service;
 }

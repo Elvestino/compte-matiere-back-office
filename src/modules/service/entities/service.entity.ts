@@ -18,8 +18,16 @@ export class Service {
   @Column()
   typeService: string;
 
-  @OneToMany(() => Ordre, (ordre) => ordre.service)
+  @OneToMany(() => Ordre, (ordre) => ordre.service, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   ordres: Ordre[];
-  @OneToMany(() => Quitus, (quitus) => quitus.service)
+  @OneToMany(() => Quitus, (quitus) => quitus.service, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   quitus: Ordre[];
 }
