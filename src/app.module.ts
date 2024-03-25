@@ -52,6 +52,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
         Entree,
       ],
     }),
+
     TypeOrmModule.forFeature([
       User,
       Fournisseur,

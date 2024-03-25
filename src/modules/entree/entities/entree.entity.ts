@@ -1,6 +1,6 @@
 import { Annee } from 'src/modules/annee/entities/annee.entity';
 import { Facture } from 'src/modules/facture/entities/facture.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Entree {
@@ -23,11 +23,13 @@ export class Entree {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinColumn({ name: 'newannee' })
   annee: Annee;
 
   @ManyToOne(() => Facture, (facture) => facture.entree, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinColumn({ name: 'numFacture' })
   facture: Facture;
 }

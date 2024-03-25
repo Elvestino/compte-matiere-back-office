@@ -24,10 +24,11 @@ export class Service {
     onUpdate: 'CASCADE',
   })
   ordres: Ordre[];
+
   @OneToMany(() => Quitus, (quitus) => quitus.service, {
     cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  quitus: Ordre[];
+  quitus: Quitus[];
 }

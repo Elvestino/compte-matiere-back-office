@@ -18,6 +18,7 @@ export class QuitusController {
 
   @Post()
   create(@Body() createQuitusDto: CreateQuitusDto): Promise<Quitus> {
+    console.log(createQuitusDto);
     return this.quitusService.create(createQuitusDto);
   }
 
@@ -27,7 +28,7 @@ export class QuitusController {
   }
 
   @Get(':numQuitus')
-  findOne(@Param('numQuitus') numQuitus: number) {
+  findOne(@Param('numQuitus') numQuitus: number): Promise<Quitus> {
     return this.quitusService.findOne(numQuitus);
   }
 

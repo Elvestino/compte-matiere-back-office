@@ -22,5 +22,6 @@ export class Quitus {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  //@JoinColumn({ name: 'numService' })
   service: Service;
 }
