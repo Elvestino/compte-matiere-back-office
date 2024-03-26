@@ -35,7 +35,7 @@ export class QuitusService {
       quitus.exerciceAnnee = createDto.exerciceAnnee;
       quitus.observateur = createDto.observateur;
       quitus.service = service;
-      console.log(quitus);
+
       const saveQuitus = await this.quitusRepository.save(quitus);
       return saveQuitus;
     } catch (error) {

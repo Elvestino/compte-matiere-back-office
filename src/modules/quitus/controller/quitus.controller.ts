@@ -18,7 +18,6 @@ export class QuitusController {
 
   @Post()
   create(@Body() createQuitusDto: CreateQuitusDto): Promise<Quitus> {
-    console.log(createQuitusDto);
     return this.quitusService.create(createQuitusDto);
   }
 
