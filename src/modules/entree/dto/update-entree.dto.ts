@@ -12,7 +12,7 @@ export class UpdateEntreeDto extends PartialType(CreateEntreeDto) {
   @IsString()
   designation: string;
   @IsString()
-  espaceUnitaire: string;
+  especeUnitaire: string;
   @IsNumber()
   quantite: number;
   @IsNumber()

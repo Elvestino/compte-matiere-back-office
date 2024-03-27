@@ -10,7 +10,7 @@ export class CreateEntreeDto {
   @IsString()
   designation: string;
   @IsString()
-  espaceUnitaire: string;
+  especeUnitaire: string;
   @IsNumber()
   quantite: number;
   @IsNumber()

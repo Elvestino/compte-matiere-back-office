@@ -13,7 +13,7 @@ export class Entree {
   @Column()
   designation: string;
   @Column()
-  espaceUnitaire: string;
+  especeUnitaire: string;
   @Column()
   quantite: number;
   @Column()

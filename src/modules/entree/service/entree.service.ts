@@ -39,7 +39,7 @@ export class EntreeService {
       entree.numFolioGL = createDto.numFolioGL;
       entree.nomenclature = createDto.nomenclature;
       entree.designation = createDto.designation;
-      entree.espaceUnitaire = createDto.espaceUnitaire;
+      entree.especeUnitaire = createDto.especeUnitaire;
       entree.quantite = createDto.quantite;
       entree.prix = createDto.prix;
 
@@ -91,7 +91,7 @@ export class EntreeService {
       existingentree.numFolioGL = updateDto.numFolioGL;
       existingentree.nomenclature = updateDto.nomenclature;
       existingentree.designation = updateDto.designation;
-      existingentree.espaceUnitaire = updateDto.espaceUnitaire;
+      existingentree.especeUnitaire = updateDto.especeUnitaire;
       existingentree.quantite = updateDto.quantite;
       existingentree.prix = updateDto.prix;
 
