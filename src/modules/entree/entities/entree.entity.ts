@@ -1,6 +1,14 @@
 import { Annee } from 'src/modules/annee/entities/annee.entity';
 import { Facture } from 'src/modules/facture/entities/facture.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Sortie } from 'src/modules/sortie/entities/sortie.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity()
 export class Entree {
@@ -32,4 +40,11 @@ export class Entree {
   })
   @JoinColumn({ name: 'numFacture' })
   facture: Facture;
+
+  @OneToMany(() => Sortie, (sortie) => sortie.entree, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  sortie: Sortie[];
 }

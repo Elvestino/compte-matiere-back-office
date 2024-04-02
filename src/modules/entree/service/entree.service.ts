@@ -59,7 +59,7 @@ export class EntreeService {
   findOne(numEntree: number): Promise<Entree> {
     return this.entreeRepository.findOne({
       where: { numEntree },
-      relations: ['entree'],
+      relations: ['entree', 'sortie'],
     });
   }
 

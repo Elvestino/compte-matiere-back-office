@@ -31,6 +31,10 @@ import { EntreeModule } from './modules/entree/entree.module';
 import { Entree } from './modules/entree/entities/entree.entity';
 import { EntreeController } from './modules/entree/controller/entree.controller';
 import { EntreeService } from './modules/entree/service/entree.service';
+import { SortieModule } from './modules/sortie/sortie.module';
+import { Sortie } from './modules/sortie/entities/sortie.entity';
+import { SortieController } from './modules/sortie/controller/sortie.controller';
+import { SortieService } from './modules/sortie/service/sortie.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -50,6 +54,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
         Facture,
         Quitus,
         Entree,
+        Sortie,
       ],
     }),
 
@@ -62,6 +67,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
       Quitus,
       Facture,
       Entree,
+      Sortie,
     ]),
     UsersModule,
     AuthModule,
@@ -72,6 +78,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
     FactureModule,
     QuitusModule,
     EntreeModule,
+    SortieModule,
   ],
   controllers: [
     AppController,
@@ -81,6 +88,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
     FactureController,
     QuitusController,
     EntreeController,
+    SortieController,
   ],
   providers: [
     AppService,
@@ -90,6 +98,7 @@ import { EntreeService } from './modules/entree/service/entree.service';
     FactureService,
     QuitusService,
     EntreeService,
+    SortieService,
   ],
 })
 export class AppModule {}
