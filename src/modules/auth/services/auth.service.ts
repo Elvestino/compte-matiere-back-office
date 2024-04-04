@@ -54,7 +54,7 @@ export class AuthService {
 
   async checkToken(token: CheckTokenDto) {
     try {
-      return await this.jwtService.verifyAsync(token.token, {
+      return await this.jwtService.verifyAsync(token.access_token, {
         secret: 'elvestinodorelin',
       });
     } catch {
