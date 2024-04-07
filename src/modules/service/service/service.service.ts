@@ -4,7 +4,7 @@ import { CreateServiceDto } from '../dto/create-service.dto';
 import { UpdateServiceDto } from '../dto/update-service.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import { v4 as uuid } from 'uuid';
 @Injectable()
 export class ServiceService {
   constructor(
@@ -14,6 +14,7 @@ export class ServiceService {
   async create(createServiceDto: CreateServiceDto): Promise<Service> {
     try {
       const newservice = this.ServiceRepository.create(createServiceDto);
+      newservice.numService = uuid();
 
       return await this.ServiceRepository.save(newservice);
     } catch (error) {
@@ -27,7 +28,7 @@ export class ServiceService {
     return this.ServiceRepository.find();
   }
 
-  async findOne(numService: number): Promise<Service | NotFoundException> {
+  async findOne(numService: string): Promise<Service | NotFoundException> {
     const newService = await this.ServiceRepository.findOne({
       where: { numService },
       relations: ['ordre', 'quitus'],
@@ -39,12 +40,11 @@ export class ServiceService {
   }
 
   async update(
-    numService: number,
     updateServiceDto: UpdateServiceDto,
   ): Promise<Service | NotFoundException> {
     try {
       const Serviceexist = await this.ServiceRepository.findOneOrFail({
-        where: { numService },
+        where: { numService: updateServiceDto.numService },
       });
 
       this.ServiceRepository.merge(Serviceexist, updateServiceDto);
@@ -57,7 +57,7 @@ export class ServiceService {
     }
   }
 
-  async remove(numService: number): Promise<Service | NotFoundException> {
+  async remove(numService: string): Promise<Service | NotFoundException> {
     const Service = await this.ServiceRepository.findOne({
       where: { numService },
     });
@@ -65,6 +65,6 @@ export class ServiceService {
       throw new NotFoundException('Numero service pas trouver');
     }
     await this.ServiceRepository.remove(Service);
-    return Service;
+    return;
   }
 }

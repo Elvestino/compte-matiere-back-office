@@ -1,8 +1,6 @@
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateFactureDto {
-  @IsNumber()
-  numFacture: number;
   @IsDate()
   dateFacture: Date;
   @IsString()
@@ -11,14 +9,11 @@ export class CreateFactureDto {
   objetFacture: string;
   @IsString()
   LieuFacture: string;
-  @IsString()
+  @IsNumber()
   montantFacture: number;
   @IsString()
   typeFacture: string;
 
-  @IsNumber()
-  numFrns: number;
-
-  @IsNumber()
-  numOrdre: number;
+  @IsString()
+  nomFrns: string;
 }

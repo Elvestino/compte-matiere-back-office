@@ -12,6 +12,7 @@ import { UsersService } from 'src/modules/users/service/users.service';
 import { CheckTokenDto } from '../dto/checkToken.dto';
 import { RegisterDto } from '../dto/register.dto';
 import { User } from 'src/modules/users/entities/user.entity';
+import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class AuthService {
   constructor(
@@ -51,13 +52,11 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     return await this.userService.create(registerDto);
   }
-
   async checkToken(token: CheckTokenDto) {
     try {
-      return await this.jwtService.verifyAsync(token.access_token, {
-        secret: 'elvestinodorelin',
-      });
-    } catch {
+      const decodedToken = jwt.verify(token.access_token, 'elvestinodorelin');
+      return decodedToken;
+    } catch (error) {
       throw new UnauthorizedException();
     }
   }

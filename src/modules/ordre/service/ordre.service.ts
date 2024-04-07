@@ -6,6 +6,7 @@ import { Ordre } from '../entities/ordre.entity';
 import { Service } from 'src/modules/service/entities/service.entity';
 import { Annee } from 'src/modules/annee/entities/annee.entity';
 import { UpdateOrdreDto } from '../dto/update-ordre.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class OrdreService {
@@ -18,27 +19,24 @@ export class OrdreService {
     private readonly anneerepository: Repository<Annee>,
   ) {}
   async create(createOrdreDto: CreateOrdreDto): Promise<Ordre> {
-    const { numService, newannee } = createOrdreDto;
-
     const service = await this.ServiceRepository.findOne({
       where: { numService: createOrdreDto.numService },
     });
     if (!service) {
-      throw new Error(`Service with numService ${numService} not found.`);
+      throw new Error(`Service with numService not found.`);
     }
     const annee = await this.anneerepository.findOne({
       where: { newannee: createOrdreDto.newannee },
     });
     if (!annee) {
-      throw new Error(`Annee with newannee ${newannee} not found.`);
+      throw new Error(`Annee with newannee not found.`);
     }
     try {
-      const ordre = new Ordre();
-      ordre.numOrdre = createOrdreDto.numOrdre;
-      ordre.dateOrdre = createOrdreDto.dateOrdre;
-      ordre.service = service;
-      ordre.annee = annee;
-      const saveOrdre = await this.ordreRepository.save(ordre);
+      const newOrdre = this.ordreRepository.create(createOrdreDto);
+      newOrdre.numOrdre = uuid();
+      newOrdre.service = service;
+      newOrdre.annee = annee;
+      const saveOrdre = await this.ordreRepository.save(newOrdre);
       return saveOrdre;
     } catch (error) {
       throw new Error(
@@ -51,26 +49,23 @@ export class OrdreService {
     return this.ordreRepository.find({ relations: ['annee', 'service'] });
   }
 
-  findOne(numOrdre: number): Promise<Ordre> {
+  findOne(numOrdre: string): Promise<Ordre> {
     return this.ordreRepository.findOne({
       where: { numOrdre },
       relations: ['ordre', 'facture'],
     });
   }
 
-  async update(
-    numOrdre: number,
-    updateOrdreDto: UpdateOrdreDto,
-  ): Promise<Ordre> {
+  async update(updateOrdreDto: UpdateOrdreDto): Promise<Ordre> {
     try {
       const { numService, newannee } = updateOrdreDto;
 
       const existingOrdre = await this.ordreRepository.findOneOrFail({
-        where: { numOrdre },
+        where: { numOrdre: updateOrdreDto.numOrdre },
         relations: ['service', 'annee'],
       });
       if (!existingOrdre) {
-        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
+        throw new Error(`Ordre with numOrdre not found.`);
       }
       const service = await this.ServiceRepository.findOneOrFail({
         where: { numService },
@@ -100,7 +95,7 @@ export class OrdreService {
     }
   }
 
-  delete(numOrdre: number) {
+  delete(numOrdre: string) {
     return this.ordreRepository.delete(numOrdre);
   }
 }

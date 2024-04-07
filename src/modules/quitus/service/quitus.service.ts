@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuitusDto } from '../dto/create-quitus.dto';
 import { UpdateQuitusDto } from '../dto/update-quitus.dto';
 import { Service } from 'src/modules/service/entities/service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quitus } from '../entities/quitus.entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class QuitusService {
@@ -15,19 +16,17 @@ export class QuitusService {
     private readonly serviceRepository: Repository<Service>,
   ) {}
   async create(createDto: CreateQuitusDto): Promise<Quitus> {
-    const { numService } = createDto;
-
     const service = await this.serviceRepository.findOne({
-      where: { numService: createDto.numService },
+      where: { nomService: createDto.nomService },
     });
     if (!service) {
-      throw new Error(`Service with numService ${numService} not found.`);
+      throw new Error(`Service with numService  not found.`);
     }
 
     try {
-      const quitus = new Quitus();
+      const quitus = this.quitusRepository.create(createDto);
 
-      quitus.numQuitus = createDto.numQuitus;
+      quitus.numQuitus = uuid();
       quitus.dateQuitus = createDto.dateQuitus;
       quitus.ReferenceQuitus = createDto.ReferenceQuitus;
       quitus.objetQuitus = createDto.objetQuitus;
@@ -36,6 +35,7 @@ export class QuitusService {
       quitus.observateur = createDto.observateur;
       quitus.service = service;
 
+      this.quitusRepository;
       const saveQuitus = await this.quitusRepository.save(quitus);
       return saveQuitus;
     } catch (error) {
@@ -47,31 +47,28 @@ export class QuitusService {
     return this.quitusRepository.find({ relations: ['service'] });
   }
 
-  findOne(numQuitus: number): Promise<Quitus> {
+  findOne(numQuitus: string): Promise<Quitus> {
     return this.quitusRepository.findOne({
       where: { numQuitus },
       relations: ['quitus'],
     });
   }
 
-  async update(numQuitus: number, updateDto: UpdateQuitusDto): Promise<Quitus> {
+  async update(updateDto: UpdateQuitusDto): Promise<Quitus> {
     try {
-      const { numService } = updateDto;
-
       const existingquitus = await this.quitusRepository.findOneOrFail({
-        where: { numQuitus },
+        where: { numQuitus: updateDto.numQuitus },
         relations: ['service'],
       });
       if (!existingquitus) {
-        throw new Error(`Ordre with numQuitus ${numQuitus} not found.`);
+        throw new NotFoundException(`Quitus not found...`);
       }
       const service = await this.serviceRepository.findOneOrFail({
-        where: { numService },
+        where: { nomService: updateDto.nomService },
       });
       if (!service) {
-        throw new Error(`Service with numService ${numService} not found.`);
+        throw new NotFoundException(`Service not found.`);
       }
-
       existingquitus.dateQuitus = updateDto.dateQuitus;
       existingquitus.ReferenceQuitus = updateDto.ReferenceQuitus;
       existingquitus.objetQuitus = updateDto.objetQuitus;
@@ -90,7 +87,7 @@ export class QuitusService {
     }
   }
 
-  remove(numQuitus: number) {
+  remove(numQuitus: string) {
     return this.quitusRepository.delete(numQuitus);
   }
 }

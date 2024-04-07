@@ -29,20 +29,17 @@ export class FournisseurController {
   }
 
   @Get(':numFrns')
-  findOne(@Param('numFrns') numFrns: number) {
+  findOne(@Param('numFrns') numFrns: string) {
     return this.fournisseurService.findOne(numFrns);
   }
 
   @Patch(':numFrns')
-  update(
-    @Param('numFrns') numFrns: number,
-    @Body() updateFournisseurDto: UpdateFournisseurDto,
-  ) {
-    return this.fournisseurService.update(numFrns, updateFournisseurDto);
+  update(@Body() updateFournisseurDto: UpdateFournisseurDto) {
+    return this.fournisseurService.update(updateFournisseurDto);
   }
 
   @Delete(':numFrns')
-  remove(@Param('numFrns') numFrns: number) {
+  remove(@Param('numFrns') numFrns: string) {
     return this.fournisseurService.remove(numFrns);
   }
 }

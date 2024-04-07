@@ -27,20 +27,17 @@ export class ServiceController {
   }
 
   @Get(':numService')
-  findOne(@Param('numService') numService: number) {
+  findOne(@Param('numService') numService: string) {
     return this.serviceService.findOne(numService);
   }
 
   @Patch(':numService')
-  update(
-    @Param('numService') numService: number,
-    @Body() updateServiceDto: UpdateServiceDto,
-  ) {
-    return this.serviceService.update(numService, updateServiceDto);
+  update(@Body() updateServiceDto: UpdateServiceDto) {
+    return this.serviceService.update(updateServiceDto);
   }
 
   @Delete(':numService')
-  remove(@Param('numService') numService: number) {
+  remove(@Param('numService') numService: string) {
     return this.serviceService.remove(numService);
   }
 }

@@ -20,6 +20,6 @@ export class UpdateEntreeDto extends PartialType(CreateEntreeDto) {
 
   @IsNumber()
   newannee: number;
-  @IsNumber()
-  numFacture: number;
+  @IsString()
+  numFacture: string;
 }

@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 @Entity()
 export class Service {
   @PrimaryColumn()
-  numService: number;
+  numService: string;
 
   @Column()
   nomService: string;

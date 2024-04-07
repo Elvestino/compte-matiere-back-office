@@ -1,4 +1,3 @@
-import { Ordre } from 'src/modules/ordre/entities/ordre.entity';
 import { Fournisseur } from 'src/modules/fournisseur/entities/fournisseur.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateFactureDto } from '../dto/create-facture.dto';
@@ -6,6 +5,7 @@ import { UpdateFactureDto } from '../dto/update-facture.dto';
 import { Facture } from '../entities/facture.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class FactureService {
@@ -14,29 +14,18 @@ export class FactureService {
     private readonly Factureepository: Repository<Facture>,
     @InjectRepository(Fournisseur)
     private readonly FournisseurRepository: Repository<Fournisseur>,
-    @InjectRepository(Ordre)
-    private readonly Ordrerepository: Repository<Ordre>,
   ) {}
 
   async create(CreateFactureDto: CreateFactureDto): Promise<Facture> {
-    const { numFrns, numOrdre } = CreateFactureDto;
-
     const fournisseur = await this.FournisseurRepository.findOne({
-      where: { numFrns: CreateFactureDto.numFrns },
+      where: { nomFrns: CreateFactureDto.nomFrns },
     });
     if (!fournisseur) {
-      throw new Error(`Fournisseur with numFrns ${numFrns} not found.`);
-    }
-
-    const ordre = await this.Ordrerepository.findOne({
-      where: { numOrdre: CreateFactureDto.numOrdre },
-    });
-    if (!ordre) {
-      throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
+      throw new Error(`Fournisseur with nomFrns not found.`);
     }
     try {
       const facture = new Facture();
-      facture.numFacture = CreateFactureDto.numFacture;
+      facture.numFacture = uuid();
       facture.dateFacture = CreateFactureDto.dateFacture;
       facture.destination = CreateFactureDto.destination;
       facture.objetFacture = CreateFactureDto.objetFacture;
@@ -44,7 +33,6 @@ export class FactureService {
       facture.montantFacture = CreateFactureDto.montantFacture;
       facture.typeFacture = CreateFactureDto.typeFacture;
       facture.fournisseur = fournisseur;
-      facture.ordre = ordre;
       const savefacture = await this.Factureepository.save(facture);
       return savefacture;
     } catch (error) {
@@ -55,10 +43,10 @@ export class FactureService {
   }
 
   findAll(): Promise<Facture[]> {
-    return this.Factureepository.find({ relations: ['ordre', 'fournisseur'] });
+    return this.Factureepository.find({ relations: ['fournisseur'] });
   }
 
-  findOne(numFacture: number): Promise<Facture> {
+  findOne(numFacture: string): Promise<Facture> {
     return this.Factureepository.findOne({
       where: { numFacture },
       relations: ['facture', 'entree'],
@@ -66,31 +54,19 @@ export class FactureService {
   }
 
   async update(
-    numFacture: number,
+    numFacture: string,
     updateFactureDto: UpdateFactureDto,
   ): Promise<Facture> {
     try {
-      const { numFrns, numOrdre } = updateFactureDto;
-
       const existingFacture = await this.Factureepository.findOneOrFail({
-        where: { numFacture },
-        relations: ['fournisseur', 'ordre'],
+        where: { numFacture: updateFactureDto.numFacture },
+        relations: ['fournisseur'],
       });
-      if (!existingFacture) {
-        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
-      }
       const frns = await this.FournisseurRepository.findOneOrFail({
-        where: { numFrns },
+        where: { nomFrns: updateFactureDto.nomFrns },
       });
       if (!frns) {
         throw new Error(`Fournisseur with numFrns ${numFacture} not found.`);
-      }
-
-      const ordre = await this.Ordrerepository.findOneOrFail({
-        where: { numOrdre },
-      });
-      if (!ordre) {
-        throw new Error(`Ordre with numOrdre ${numOrdre} not found.`);
       }
 
       existingFacture.dateFacture = updateFactureDto.dateFacture;
@@ -100,7 +76,6 @@ export class FactureService {
       existingFacture.montantFacture = updateFactureDto.montantFacture;
       existingFacture.typeFacture = updateFactureDto.typeFacture;
       existingFacture.fournisseur = frns;
-      existingFacture.ordre = ordre;
 
       const updatedFacture = await this.Factureepository.save(existingFacture);
       return updatedFacture;
@@ -112,7 +87,7 @@ export class FactureService {
     }
   }
 
-  async delete(numFacture: number): Promise<void> {
+  async delete(numFacture: string): Promise<void> {
     await this.Factureepository.delete(numFacture);
   }
 }

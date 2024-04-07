@@ -3,8 +3,8 @@ import { CreateFactureDto } from './create-facture.dto';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class UpdateFactureDto extends PartialType(CreateFactureDto) {
-  @IsNumber()
-  numFacture: number;
+  @IsString()
+  numFacture: string;
   @IsDate()
   dateFacture: Date;
   @IsString()
@@ -13,14 +13,11 @@ export class UpdateFactureDto extends PartialType(CreateFactureDto) {
   ojbetFacture: string;
   @IsString()
   LieuFacture: string;
-  @IsString()
+  @IsNumber()
   montantFacture: number;
   @IsString()
   typeFacture: string;
 
-  @IsNumber()
-  numFrns: number;
-
-  @IsNumber()
-  numOrdre: number;
+  @IsString()
+  nomFrns: string;
 }

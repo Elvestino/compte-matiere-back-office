@@ -27,20 +27,17 @@ export class QuitusController {
   }
 
   @Get(':numQuitus')
-  findOne(@Param('numQuitus') numQuitus: number): Promise<Quitus> {
+  findOne(@Param('numQuitus') numQuitus: string): Promise<Quitus> {
     return this.quitusService.findOne(numQuitus);
   }
 
   @Patch(':numQuitus')
-  update(
-    @Param('numQuitus') numQuitus: number,
-    @Body() updateQuitusDto: UpdateQuitusDto,
-  ) {
-    return this.quitusService.update(numQuitus, updateQuitusDto);
+  update(@Body() updateQuitusDto: UpdateQuitusDto) {
+    return this.quitusService.update(updateQuitusDto);
   }
 
   @Delete(':numQuitus')
-  remove(@Param('numQuitus') numQuitus: number) {
+  remove(@Param('numQuitus') numQuitus: string) {
     return this.quitusService.remove(numQuitus);
   }
 }

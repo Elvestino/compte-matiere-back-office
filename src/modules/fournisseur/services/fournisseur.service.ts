@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fournisseur } from '../entities/fournisseur.entity';
 import { UpdateFournisseurDto } from '../dto/update-fournisseur.dto';
-
+import { v4 as uuid } from 'uuid';
 @Injectable()
 export class FournisseurService {
   constructor(
@@ -17,6 +17,7 @@ export class FournisseurService {
   ): Promise<Fournisseur> {
     try {
       const newfrns = this.fournisseurRepository.create(createFournisseurDto);
+      newfrns.numFrns = uuid();
 
       return await this.fournisseurRepository.save(newfrns);
     } catch (error) {
@@ -29,7 +30,7 @@ export class FournisseurService {
     return this.fournisseurRepository.find();
   }
 
-  async findOne(numFrns: number): Promise<Fournisseur | NotFoundException> {
+  async findOne(numFrns: string): Promise<Fournisseur | NotFoundException> {
     const newFrns = await this.fournisseurRepository.findOne({
       where: { numFrns },
       relations: ['facture'],
@@ -41,26 +42,23 @@ export class FournisseurService {
   }
 
   async update(
-    numFrns: number,
     updateFournisseurDto: UpdateFournisseurDto,
   ): Promise<Fournisseur | NotFoundException> {
     try {
       const Frnsexist = await this.fournisseurRepository.findOneOrFail({
-        where: { numFrns },
+        where: { numFrns: updateFournisseurDto.numFrns },
       });
 
       this.fournisseurRepository.merge(Frnsexist, updateFournisseurDto);
-      console.log(Frnsexist);
       const updatedFournisseur =
         await this.fournisseurRepository.save(Frnsexist);
-      console.log(updatedFournisseur);
       return updatedFournisseur;
     } catch (error) {
       throw new NotFoundException('numero Fournisseur pas trouver');
     }
   }
 
-  async remove(numFrns: number): Promise<Fournisseur | NotFoundException> {
+  async remove(numFrns: string): Promise<Fournisseur | NotFoundException> {
     const Fournisseur = await this.fournisseurRepository.findOne({
       where: { numFrns },
     });

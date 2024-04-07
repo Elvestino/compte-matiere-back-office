@@ -4,7 +4,8 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateServiceDto extends PartialType(CreateServiceDto) {
   @IsNotEmpty()
-  numService: number;
+  @IsString()
+  numService: string;
 
   @IsNotEmpty()
   @IsString()

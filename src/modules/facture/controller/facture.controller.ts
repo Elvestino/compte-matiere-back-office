@@ -27,20 +27,20 @@ export class FactureController {
   }
 
   @Get(':numFacture')
-  findOne(@Param('numFacture') numFacture: number) {
+  findOne(@Param('numFacture') numFacture: string) {
     return this.factureService.findOne(numFacture);
   }
 
   @Patch(':numFacture')
   update(
-    @Param('numFacture') numFacture: number,
+    @Param('numFacture') numFacture: string,
     @Body() updateFactureDto: UpdateFactureDto,
   ) {
     return this.factureService.update(numFacture, updateFactureDto);
   }
 
   @Delete(':numFacture')
-  remove(@Param('numFacture') numFacture: number) {
+  remove(@Param('numFacture') numFacture: string) {
     return this.factureService.delete(numFacture);
   }
 }

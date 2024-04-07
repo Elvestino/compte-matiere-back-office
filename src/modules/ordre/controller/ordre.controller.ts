@@ -18,6 +18,7 @@ export class OrdreController {
 
   @Post()
   create(@Body() createOrdreDto: CreateOrdreDto): Promise<Ordre> {
+    console.log(createOrdreDto);
     return this.ordreService.create(createOrdreDto);
   }
 
@@ -27,20 +28,17 @@ export class OrdreController {
   }
 
   @Get(':numOrdre')
-  findOne(@Param('numOrdre') numOrdre: number): Promise<Ordre> {
+  findOne(@Param('numOrdre') numOrdre: string): Promise<Ordre> {
     return this.ordreService.findOne(numOrdre);
   }
 
   @Patch(':numOrdre')
-  update(
-    @Param('numOrdre') numOrdre: number,
-    @Body() updateOrdreDto: UpdateOrdreDto,
-  ) {
-    return this.ordreService.update(numOrdre, updateOrdreDto);
+  update(@Body() updateOrdreDto: UpdateOrdreDto) {
+    return this.ordreService.update(updateOrdreDto);
   }
 
   @Delete(':numOrdre')
-  remove(@Param('numOrdre') numOrdre: number) {
+  remove(@Param('numOrdre') numOrdre: string) {
     return this.ordreService.delete(numOrdre);
   }
 }

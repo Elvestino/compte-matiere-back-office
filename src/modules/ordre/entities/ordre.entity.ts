@@ -1,19 +1,12 @@
 import { Annee } from 'src/modules/annee/entities/annee.entity';
-import { Facture } from 'src/modules/facture/entities/facture.entity';
+
 import { Service } from 'src/modules/service/entities/service.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Ordre {
   @PrimaryColumn()
-  numOrdre: number;
+  numOrdre: string;
 
   @Column({ type: 'date' })
   dateOrdre: Date;
@@ -31,11 +24,4 @@ export class Ordre {
   })
   @JoinColumn({ name: 'newannee' })
   annee: Annee;
-
-  @OneToMany(() => Facture, (facture) => facture.ordre, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  factures: Facture[];
 }

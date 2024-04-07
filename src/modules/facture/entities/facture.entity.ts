@@ -1,6 +1,6 @@
 import { Entree } from 'src/modules/entree/entities/entree.entity';
 import { Fournisseur } from 'src/modules/fournisseur/entities/fournisseur.entity';
-import { Ordre } from 'src/modules/ordre/entities/ordre.entity';
+
 import {
   Column,
   Entity,
@@ -13,7 +13,7 @@ import {
 @Entity()
 export class Facture {
   @PrimaryColumn()
-  numFacture: number;
+  numFacture: string;
   @Column({ type: 'date' })
   dateFacture: Date;
   @Column()
@@ -33,13 +33,6 @@ export class Facture {
   })
   @JoinColumn({ name: 'numFrns' })
   fournisseur: Fournisseur;
-
-  @ManyToOne(() => Ordre, (ordre) => ordre.factures, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'numOrdre' })
-  ordre: Ordre;
 
   @OneToMany(() => Entree, (entree) => entree.facture, {
     cascade: true,

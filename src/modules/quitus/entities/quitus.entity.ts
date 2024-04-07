@@ -1,10 +1,10 @@
 import { Service } from 'src/modules/service/entities/service.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Quitus {
   @PrimaryColumn()
-  numQuitus: number;
+  numQuitus: string;
   @Column({ type: 'date' })
   dateQuitus: Date;
   @Column()
@@ -22,6 +22,6 @@ export class Quitus {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  //@JoinColumn({ name: 'numService' })
+  @JoinColumn({ name: 'numService' })
   service: Service;
 }

@@ -35,6 +35,7 @@ import { SortieModule } from './modules/sortie/sortie.module';
 import { Sortie } from './modules/sortie/entities/sortie.entity';
 import { SortieController } from './modules/sortie/controller/sortie.controller';
 import { SortieService } from './modules/sortie/service/sortie.service';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({

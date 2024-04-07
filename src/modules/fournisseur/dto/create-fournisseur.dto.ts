@@ -2,9 +2,6 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateFournisseurDto {
   @IsNotEmpty()
-  numFrns: number;
-
-  @IsNotEmpty()
   nomFrns: string;
 
   @IsNotEmpty()
