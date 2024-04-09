@@ -20,7 +20,7 @@ export class QuitusService {
       where: { nomService: createDto.nomService },
     });
     if (!service) {
-      throw new Error(`Service with numService  not found.`);
+      throw new Error(`Service with nomService  not found.`);
     }
 
     try {

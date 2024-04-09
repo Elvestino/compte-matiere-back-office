@@ -27,20 +27,17 @@ export class EntreeController {
   }
 
   @Get(':numEntree')
-  findOne(@Param('numEntree') numEntree: number): Promise<Entree> {
-    return this.entreeService.findOne(+numEntree);
+  findOne(@Param('numEntree') numEntree: string): Promise<Entree> {
+    return this.entreeService.findOne(numEntree);
   }
 
   @Patch(':numEntree')
-  update(
-    @Param('numEntree') numEntree: number,
-    @Body() updateEntreeDto: UpdateEntreeDto,
-  ) {
-    return this.entreeService.update(+numEntree, updateEntreeDto);
+  update(@Body() updateEntreeDto: UpdateEntreeDto) {
+    return this.entreeService.update(updateEntreeDto);
   }
 
   @Delete(':numEntree')
-  remove(@Param('numEntree') numEntree: number) {
-    return this.entreeService.remove(+numEntree);
+  remove(@Param('numEntree') numEntree: string) {
+    return this.entreeService.remove(numEntree);
   }
 }

@@ -18,12 +18,12 @@ export class SortieController {
   }
 
   @Get(':numSortie')
-  findOne(@Param('numSortie') numSortie: number): Promise<Sortie> {
-    return this.sortieService.findOne(+numSortie);
+  findOne(@Param('numSortie') numSortie: string): Promise<Sortie> {
+    return this.sortieService.findOne(numSortie);
   }
 
   @Delete(':numSortie')
-  remove(@Param('numSortie') numSortie: number) {
-    return this.sortieService.remove(+numSortie);
+  remove(@Param('numSortie') numSortie: string) {
+    return this.sortieService.remove(numSortie);
   }
 }

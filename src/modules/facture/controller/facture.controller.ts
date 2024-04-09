@@ -32,11 +32,8 @@ export class FactureController {
   }
 
   @Patch(':numFacture')
-  update(
-    @Param('numFacture') numFacture: string,
-    @Body() updateFactureDto: UpdateFactureDto,
-  ) {
-    return this.factureService.update(numFacture, updateFactureDto);
+  update(@Body() updateFactureDto: UpdateFactureDto) {
+    return this.factureService.update(updateFactureDto);
   }
 
   @Delete(':numFacture')

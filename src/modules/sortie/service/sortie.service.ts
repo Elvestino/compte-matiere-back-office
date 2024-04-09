@@ -4,7 +4,7 @@ import { Entree } from 'src/modules/entree/entities/entree.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sortie } from '../entities/sortie.entity';
-
+import { v4 as uuid } from 'uuid';
 @Injectable()
 export class SortieService {
   constructor(
@@ -14,18 +14,16 @@ export class SortieService {
     private readonly sortieRepository: Repository<Sortie>,
   ) {}
   async create(createDto: CreateSortieDto): Promise<Sortie> {
-    const { numEntree } = createDto;
-
     const entree = await this.entreeRepository.findOne({
       where: { numEntree: createDto.numEntree },
     });
     if (!entree) {
-      throw new Error(`entree with numEntree ${numEntree} not found.`);
+      throw new Error(`entree with numEntree not found.`);
     }
 
     try {
-      const sortie = new Sortie();
-      sortie.numSortie = createDto.numSortie;
+      const sortie = this.sortieRepository.create(createDto);
+      sortie.numSortie = uuid();
       sortie.entree = entree;
       const savesortie = await this.sortieRepository.save(sortie);
       return savesortie;
@@ -38,14 +36,14 @@ export class SortieService {
     return this.sortieRepository.find({ relations: ['entree'] });
   }
 
-  findOne(numSortie: number): Promise<Sortie> {
+  findOne(numSortie: string): Promise<Sortie> {
     return this.sortieRepository.findOne({
       where: { numSortie },
       relations: ['sortie'],
     });
   }
 
-  remove(numSortie: number) {
+  remove(numSortie: string) {
     return this.sortieRepository.delete(numSortie);
   }
 }

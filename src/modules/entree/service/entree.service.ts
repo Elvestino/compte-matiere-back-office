@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Facture } from 'src/modules/facture/entities/facture.entity';
 import { Annee } from 'src/modules/annee/entities/annee.entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class EntreeService {
@@ -19,29 +20,27 @@ export class EntreeService {
   ) {}
 
   async create(createDto: CreateEntreeDto): Promise<Entree> {
-    const { numFacture, newannee } = createDto;
-
     const facture = await this.factureRepository.findOne({
-      where: { numFacture: createDto.numFacture },
+      where: { destination: createDto.destination },
     });
     if (!facture) {
-      throw new Error(`facture with numFacture ${numFacture} not found.`);
+      throw new Error(`facture with destination  not found.`);
     }
     const annee = await this.anneerepository.findOne({
       where: { newannee: createDto.newannee },
     });
     if (!annee) {
-      throw new Error(`Annee with newannee ${newannee} not found.`);
+      throw new Error(`Annee with newannee not found.`);
     }
     try {
-      const entree = new Entree();
-      entree.numEntree = createDto.numEntree;
-      entree.numFolioGL = createDto.numFolioGL;
-      entree.nomenclature = createDto.nomenclature;
-      entree.designation = createDto.designation;
-      entree.especeUnitaire = createDto.especeUnitaire;
-      entree.quantite = createDto.quantite;
-      entree.prix = createDto.prix;
+      const entree = this.entreeRepository.create(createDto);
+      entree.numEntree = uuid();
+      // entree.numFolioGL = createDto.numFolioGL;
+      // entree.nomenclature = createDto.nomenclature;
+      // entree.designation = createDto.designation;
+      // entree.especeUnitaire = createDto.especeUnitaire;
+      // entree.quantite = createDto.quantite;
+      // entree.prix = createDto.prix;
 
       entree.facture = facture;
       entree.annee = annee;
@@ -56,36 +55,34 @@ export class EntreeService {
     return this.entreeRepository.find({ relations: ['annee', 'facture'] });
   }
 
-  findOne(numEntree: number): Promise<Entree> {
+  findOne(numEntree: string): Promise<Entree> {
     return this.entreeRepository.findOne({
       where: { numEntree },
       relations: ['entree', 'sortie'],
     });
   }
 
-  async update(numEntree: number, updateDto: UpdateEntreeDto): Promise<Entree> {
+  async update(updateDto: UpdateEntreeDto): Promise<Entree> {
     try {
-      const { numFacture, newannee } = updateDto;
-
       const existingentree = await this.entreeRepository.findOneOrFail({
-        where: { numEntree },
+        where: { numEntree: updateDto.numEntree },
         relations: ['facture', 'annee'],
       });
       if (!existingentree) {
-        throw new Error(`Ordre with numEntree ${numEntree} not found.`);
+        throw new Error(`Ordre with numEntree not found.`);
       }
       const facture = await this.factureRepository.findOneOrFail({
-        where: { numFacture },
+        where: { destination: updateDto.destination },
       });
       if (!facture) {
-        throw new Error(`Facture with numFacture ${numFacture} not found.`);
+        throw new Error(`Facture with designation not found.`);
       }
 
       const annee = await this.anneerepository.findOneOrFail({
-        where: { newannee },
+        where: { newannee: updateDto.newannee },
       });
       if (!annee) {
-        throw new Error(`Annee with newannee ${newannee} not found.`);
+        throw new Error(`Annee with newannee  not found.`);
       }
 
       existingentree.numFolioGL = updateDto.numFolioGL;
@@ -108,7 +105,7 @@ export class EntreeService {
     }
   }
 
-  remove(numEntree: number) {
+  remove(numEntree: string) {
     return this.entreeRepository.delete(numEntree);
   }
 }

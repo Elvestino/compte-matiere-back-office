@@ -13,7 +13,7 @@ import {
 @Entity()
 export class Entree {
   @PrimaryColumn()
-  numEntree: number;
+  numEntree: string;
   @Column()
   numFolioGL: number;
   @Column()
@@ -38,7 +38,7 @@ export class Entree {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'numFacture' })
+  @JoinColumn({ name: 'destination' })
   facture: Facture;
 
   @OneToMany(() => Sortie, (sortie) => sortie.entree, {

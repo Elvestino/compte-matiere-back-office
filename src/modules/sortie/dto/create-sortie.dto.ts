@@ -1,9 +1,9 @@
-import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateSortieDto {
-  @IsNumber()
-  numSortie: number;
+  @IsString()
+  numSortie: string;
 
-  @IsNumber()
-  numEntree: number;
+  @IsString()
+  numEntree: string;
 }

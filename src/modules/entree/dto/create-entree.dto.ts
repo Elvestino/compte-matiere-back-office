@@ -1,8 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreateEntreeDto {
-  @IsNumber()
-  numEntree: number;
   @IsString()
   numFolioGL: number;
   @IsString()
@@ -19,5 +17,5 @@ export class CreateEntreeDto {
   @IsNumber()
   newannee: number;
   @IsString()
-  numFacture: string;
+  destination: string;
 }

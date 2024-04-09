@@ -3,8 +3,8 @@ import { CreateEntreeDto } from './create-entree.dto';
 import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateEntreeDto extends PartialType(CreateEntreeDto) {
-  @IsNumber()
-  numEntree: number;
+  @IsString()
+  numEntree: string;
   @IsString()
   numFolioGL: number;
   @IsString()
@@ -21,5 +21,5 @@ export class UpdateEntreeDto extends PartialType(CreateEntreeDto) {
   @IsNumber()
   newannee: number;
   @IsString()
-  numFacture: string;
+  destination: string;
 }

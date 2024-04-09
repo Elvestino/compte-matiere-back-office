@@ -24,14 +24,14 @@ export class FactureService {
       throw new Error(`Fournisseur with nomFrns not found.`);
     }
     try {
-      const facture = new Facture();
+      const facture = this.Factureepository.create(CreateFactureDto);
       facture.numFacture = uuid();
-      facture.dateFacture = CreateFactureDto.dateFacture;
-      facture.destination = CreateFactureDto.destination;
-      facture.objetFacture = CreateFactureDto.objetFacture;
-      facture.LieuFacture = CreateFactureDto.LieuFacture;
-      facture.montantFacture = CreateFactureDto.montantFacture;
-      facture.typeFacture = CreateFactureDto.typeFacture;
+      // facture.dateFacture = CreateFactureDto.dateFacture;
+      // facture.destination = CreateFactureDto.destination;
+      // facture.objetFacture = CreateFactureDto.objetFacture;
+      // facture.LieuFacture = CreateFactureDto.LieuFacture;
+      // facture.montantFacture = CreateFactureDto.montantFacture;
+      // facture.typeFacture = CreateFactureDto.typeFacture;
       facture.fournisseur = fournisseur;
       const savefacture = await this.Factureepository.save(facture);
       return savefacture;
@@ -53,10 +53,7 @@ export class FactureService {
     });
   }
 
-  async update(
-    numFacture: string,
-    updateFactureDto: UpdateFactureDto,
-  ): Promise<Facture> {
+  async update(updateFactureDto: UpdateFactureDto): Promise<Facture> {
     try {
       const existingFacture = await this.Factureepository.findOneOrFail({
         where: { numFacture: updateFactureDto.numFacture },
@@ -66,7 +63,7 @@ export class FactureService {
         where: { nomFrns: updateFactureDto.nomFrns },
       });
       if (!frns) {
-        throw new Error(`Fournisseur with numFrns ${numFacture} not found.`);
+        throw new Error(`Fournisseur with numFrns not found.`);
       }
 
       existingFacture.dateFacture = updateFactureDto.dateFacture;
